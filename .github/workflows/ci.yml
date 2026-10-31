@@ -32,6 +32,9 @@ jobs:
       - name: Run Checkstyle
         run: ./gradlew checkstyleMain checkstyleTest
 
+      - name: Run SpotBugs
+        run: ./gradlew spotbugsMain spotbugsTest
+
       - name: Build and Run Tests with JaCoCo
         run: ./gradlew clean build
 
