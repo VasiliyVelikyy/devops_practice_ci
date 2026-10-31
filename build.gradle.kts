@@ -4,7 +4,7 @@ plugins {
 	id("io.spring.dependency-management") version "1.1.7"
     id ("jacoco")
     id("checkstyle")
-    //id("com.github.spotbugs") version "6.4.8"
+    id("com.github.spotbugs") version "6.4.8"
 }
 
 group = "ru.moskalev"
@@ -13,12 +13,12 @@ version = "1.0.2"
 checkstyle {
     toolVersion = "10.24.0"
 }
-//
-//spotbugs {
-//    toolVersion = "4.9.8"
-//    ignoreFailures = false
-//    showStackTraces = true
-//}
+
+spotbugs {
+    toolVersion = "4.9.8"
+    ignoreFailures = false
+    showStackTraces = true
+}
 
 java {
 	toolchain {
