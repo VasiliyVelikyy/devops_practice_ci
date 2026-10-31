@@ -8,7 +8,7 @@ plugins {
 }
 
 group = "ru.moskalev"
-version = "1.0.2"
+version = "1.0.3"
 
 checkstyle {
     toolVersion = "10.24.0"
