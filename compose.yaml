@@ -1,0 +1,60 @@
+services:
+  postgres:
+    image: postgres:latest
+    restart: always
+    container_name: postgres_container
+    environment:
+      POSTGRES_USER: vasiliy
+      POSTGRES_PASSWORD: moskalev
+      POSTGRES_DB: moskalev_dev
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data/pgdata
+
+  pgadmin:
+    container_name: pgadmin
+    restart: always
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@dev.ru
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+
+  kafka:
+    image: redpandadata/redpanda:v24.2.10
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    volumes:
+      - redpanda_data:/var/lib/redpanda/data # Сохраняем данные между перезапусками
+    command:
+      - redpanda
+      - start
+      - --overprovisioned
+      - --smp=1
+      - --memory=1G
+      - --reserve-memory=0M
+      - --node-id=0
+      - --check=false
+      - --kafka-addr=0.0.0.0:9092
+      - --advertise-kafka-addr=localhost:9092
+    restart: unless-stopped
+
+  mongodb:
+    image: mongo:7-jammy
+    container_name: demo-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    restart: unless-stopped
+
+volumes:
+  redpanda_data:
+  mongodb_data:

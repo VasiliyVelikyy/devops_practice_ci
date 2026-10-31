@@ -1,0 +1,78 @@
+server:
+  port: 8090
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add.type.headers: true
+    consumer:
+      group-id: hotel-reservation-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: ru.moskalev.hotel_reservation.dto.kafka
+    topics:
+      user: user-registration
+      booking: room-booking
+
+  outbox:
+    polling:
+      delay:
+        ms: 5000
+      batch-size: 100
+
+  application:
+    name: hotel-reservation
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/moskalev_dev?currentSchema=hotel_reservation
+    username: vasiliy
+    password: moskalev1
+
+  jpa:
+    database: POSTGRESQL
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+        highlight_sql: true   # ANSI-подсветка синтаксиса
+        use_sql_comments: true # Добавляет комментарий с именем репозитория/метода
+        jdbc:
+          batch_size: 100
+        order_inserts: true
+        order_updates: true
+
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.xml
+  mongodb:
+    uri: mongodb://root:example@localhost:27017/hotel_reservation?authSource=admin
+logging:
+  level:
+    # при дебагинге DEBUG /OFF
+    org.hibernate.SQL: DEBUG
+    # при дебагинге TRACE /OFF
+    org.hibernate.orm.jdbc.bind: TRACE
+    org.apache.kafka: OFF
+    org.springframework.kafka: OFF
+    org.apache.kafka.clients.consumer: OFF
+    org.apache.kafka.clients.NetworkClient: OFF
+    org.springframework.boot.autoconfigure.kafka: OFF
+    org.springframework.beans: OFF
+
+
+#Сваггер
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui
+    enabled: true
+
