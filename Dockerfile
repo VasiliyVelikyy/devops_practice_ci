@@ -1,8 +1,13 @@
-FROM eclipse-temurin:21-jdk
+FROM eclipse-temurin:21-jre
+
+RUN groupadd -r appuser && useradd -r -g appuser -d /home/appuser -s /sbin/nologin appuser
+
 
 WORKDIR /app
 
-COPY build/libs/hotel-reservation-1.0.2.jar app.jar
+COPY --chown=appuser:appuser build/libs/hotel-reservation-1.0.2.jar app.jar
+
+USER appuser
 
 EXPOSE 8090
 

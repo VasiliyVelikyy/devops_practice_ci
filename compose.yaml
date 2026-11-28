@@ -2,7 +2,6 @@ services:
   postgres:
     image: postgres:17-alpine
     restart: always
-    container_name: postgres_container
     environment:
       POSTGRES_USER: vasiliy
       POSTGRES_PASSWORD: moskalev
@@ -14,7 +13,6 @@ services:
       - ./pgdata:/var/lib/postgresql/data/pgdata
 
   pgadmin:
-    container_name: pgadmin
     restart: always
     image: dpage/pgadmin4:latest
     environment:
