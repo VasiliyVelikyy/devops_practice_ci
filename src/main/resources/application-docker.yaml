@@ -1,0 +1,26 @@
+spring:
+  kafka:
+    bootstrap-servers: kafka:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add.type.headers: true
+    consumer:
+      group-id: hotel-reservation-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: ru.moskalev.hotel_reservation.dto.kafka
+    topics:
+      user: user-registration
+      booking: room-booking
+
+  datasource:
+    url: jdbc:postgresql://postgres:5432/moskalev_dev?currentSchema=hotel_reservation
+    username: vasiliy
+    password: ${DB_PASSWORD}
+
+  mongodb:
+    uri: mongodb://root:${MONGO_PASSWORD}@mongodb:27017/hotel_reservation?authSource=admin
